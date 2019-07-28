@@ -6,6 +6,7 @@
 </head>
 
 <script src="js/pixi.min.js"></script>
+<script src="js/jquery-3.4.1.min.js"></script>
 
 <style>
   * {
@@ -34,9 +35,14 @@
 
     <h1>PixiJS Test</h1>
     <h2>RGB to HSL</h2>
-    <h3>for PixiJS Ver. 4.x</h3>
-
+    
     <div id="canvas"></div>
+
+    <div>
+      <p>RGB 16進数 <input type="text" name="a" size="30" id="box_input"> 例： 255,0,0</p>
+
+      <p>HSL <input type="text" name="b" size="30" id="box_output"></p>
+    </div>
 
   </div>
 

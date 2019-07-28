@@ -1,3 +1,14 @@
+console.log("jQuery ver. ", $.fn.jquery);
+
+$('#box_input').change(function() {
+  console.log("change !");
+  input_value = $('#box_input').val();
+  let hsl_result = changeRGBtoHSL(255, 0, 0);
+  console.log("hsl_result; ", hsl_result);
+  $('#box_output').val(hsl_result);
+  bg.tint = 0xff0000;
+});
+
 const WIDTH = 384;
 const HEIGHT = 384;
 const APP_FPS = 60;
@@ -16,6 +27,8 @@ const fpsDelta = 60 / APP_FPS;
 
 let bg;
 let elapsedTime = 0;
+
+let input_value;
 
 let container_bg = new PIXI.Container();
 container_bg.x = 0;
@@ -56,6 +69,7 @@ function onAssetsLoaded(loader, res) {
     console.log("click"); // Desktop
   });
 
+  /*
   // HSL to RGB
   let rgb_result = changeHSLtoRGB(0, 1, 0.5); // [0, 1, 0.5] ok, but [360, 1, 0.5] -> 0, 0, 0
   console.log("rgb_result: ", rgb_result); // rgb_result: [255, 0, 0]
@@ -63,6 +77,7 @@ function onAssetsLoaded(loader, res) {
   // RGB to HSL
   let hsl_result = changeRGBtoHSL(255, 0, 0);
   console.log("hsl_result: ", hsl_result); // hsl_result: [0, 1, 0.5]
+  */
 
   // ticker
   let ticker = PIXI.ticker.shared;
