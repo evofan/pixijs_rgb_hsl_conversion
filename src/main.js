@@ -1,13 +1,66 @@
 console.log("jQuery ver. ", $.fn.jquery);
 
-$('#box_input').change(function() {
-  console.log("change !");
-  input_value = $('#box_input').val();
-  let hsl_result = changeRGBtoHSL(255, 0, 0);
-  console.log("hsl_result; ", hsl_result);
-  $('#box_output').val(hsl_result);
-  bg.tint = 0xff0000;
+$("#box_input_rgb10").change(function() {
+  console.log("color inputed !");
+
+  let input_val = $("#box_input_rgb10").val();
+  console.log("input_val: ", input_val);
+
+  let temp = input_val.split(",");
+  if (temp.length !== 3) {
+    $("#box_input_rgb10").val("");
+    showMessageAlert("Please enter a number within the specification.");
+    return false;
+  }
+
+  let input_val_ary = temp.map(el => {
+    return Number(el);
+  });
+
+  // Check Out og range, NaN
+  let numCheck = input_val_ary.filter(el => el > 255 || el < 0 || isNaN(el));
+  if (numCheck.length) {
+    showMessageAlert("Please enter a number within the specification.");
+    $("#box_input_rgb10").val("");
+    return false;
+  }
+
+  let rgb_hexa_result = input_val_ary.map(el => {
+    // return Number(el).toString(16).toUpperCase(); // ff -> FF
+    return Number(el).toString(16);
+  });
+  console.log(rgb_hexa_result); // ["ff", "0", "0"]
+  showMessageAlert("");
+  $("#box_output_rgb16").val(rgb_hexa_result);
+
+  let hsl_result = changeRGBtoHSL( // changeRGBtoHSL():  255 0 0
+    input_val_ary[0],
+    input_val_ary[1],
+    input_val_ary[2]
+  );
+  console.log("hsl_result: ", hsl_result); // hsl_result: [0, 1, 0.5]
+  $("#box_output_hsl").val(hsl_result);
+
+  // Padding zero
+  let paddingZeroNum = rgb_hexa_result.map(el => {
+    return ("0" + el).slice(-2);
+  });
+  console.log("paddingZeroNum: ", paddingZeroNum); // ff, 00, 00
+  $("#box_output_rgb16").val(paddingZeroNum);
+
+  // Concatenate numbers
+  let concatenateNum = `0x${paddingZeroNum[0]}${paddingZeroNum[1]}${paddingZeroNum[2]}`;
+  console.log("concatenateNum: ", concatenateNum); // 0xff0000
+  bg.tint = concatenateNum;
 });
+
+/**
+ * Display text in message box.
+ * @param { string } str text
+ */
+function showMessageAlert(str) {
+  $("#message").val(str);
+}
 
 const WIDTH = 384;
 const HEIGHT = 384;
@@ -27,8 +80,6 @@ const fpsDelta = 60 / APP_FPS;
 
 let bg;
 let elapsedTime = 0;
-
-let input_value;
 
 let container_bg = new PIXI.Container();
 container_bg.x = 0;
@@ -95,10 +146,10 @@ function onAssetsLoaded(loader, res) {
  * @see https://stackoverflow.com/questions/2353211/hsl-to-rgb-color-conversion
  * @see https://ja.wikipedia.org/wiki/HLS%E8%89%B2%E7%A9%BA%E9%96%93
  * HLS色空間とは色相、彩度、輝度の3つの成分からなる色空間。HSV空間によく似ている。HSL、HSIとも呼ばれる。
- * @param { number } h Hue（ヒュー）... 色相…色味を0-360度の角度で表す。0度=赤、反対の180度=青
- * @param { number } s Saturation（サチュレイション）... 彩度…純色から彩度が落ちる=灰色になっていく
- * @param { number } l Lightness（ライトネス）/ Luminance（ルミナンス） / Intensity（インテンシティ） ... 輝度…輝度0%を黒、100%を白、50%を純色とする。
- * @returns { array } rgb representation
+ * @param { number } h Hue（ヒュー）... 色相 … 色味を0-360度の角度で表す。0度=赤、反対の180度=青
+ * @param { number } s Saturation（サチュレイション）... 彩度 … 純色から彩度が落ちる=灰色になっていく
+ * @param { number } l Lightness（ライトネス：明度）/ Luminance（ルミナンス：輝度） / Intensity（インテンシティ：明度・彩度・輝度・強度） ... 輝度 … 輝度0%を黒、100%を白、50%を純色とする。
+ * @returns { array } rgb representation（リプリゼンテイション、表示）
  */
 function changeHSLtoRGB(h, s, l) {
   console.log("changeHSLtoRGB(): ", h, s, l);
@@ -108,11 +159,21 @@ function changeHSLtoRGB(h, s, l) {
     r = g = b = l; // achromatic（アクロマティック）… 無彩色・白黒
   } else {
     let hue2rgb = function hue2rgb(p, q, t) {
-      if (t < 0) { t += 1; }
-      if (t > 1) { t -= 1; }
-      if (t < 1 / 6) { return p + (q - p) * 6 * t; }
-      if (t < 1 / 2) { return q; }
-      if (t < 2 / 3) { return p + (q - p) * (2 / 3 - t) * 6; }
+      if (t < 0) {
+        t += 1;
+      }
+      if (t > 1) {
+        t -= 1;
+      }
+      if (t < 1 / 6) {
+        return p + (q - p) * 6 * t;
+      }
+      if (t < 1 / 2) {
+        return q;
+      }
+      if (t < 2 / 3) {
+        return p + (q - p) * (2 / 3 - t) * 6;
+      }
       return p;
     };
 
@@ -124,15 +185,31 @@ function changeHSLtoRGB(h, s, l) {
   }
 
   // return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
-  return [ Math.min(Math.floor(r * 256), 255), Math.min(Math.floor(g * 256), 255), Math.min(Math.floor(b * 256), 255) ];
+  return [
+    Math.min(Math.floor(r * 256), 255),
+    Math.min(Math.floor(g * 256), 255),
+    Math.min(Math.floor(b * 256), 255)
+  ];
 }
 
+/**
+ * Converts an RGB color value to HSL. Conversion formula
+ * adapted from http://en.wikipedia.org/wiki/HSL_color_space.
+ * Assumes r, g, and b are contained in the set [0, 255] and
+ * returns h, s, and l in the set [0, 1].
+ * @param { numebr } r Red color value
+ * @param { number } g Green color value
+ * @param { numer } b Blue color value
+ * @returns { array } hsl representation
+ */
 function changeRGBtoHSL(r, g, b) {
   console.log("changeRGBtoHSL(): ", r, g, b);
   (r /= 255), (g /= 255), (b /= 255);
   let max = Math.max(r, g, b);
   let min = Math.min(r, g, b);
-  let h, s, l = (max + min) / 2;
+  let h,
+    s,
+    l = (max + min) / 2;
 
   if (max === min) {
     h = s = 0; // achromatic（アクロマティック）… 無彩色・白黒
@@ -140,9 +217,15 @@ function changeRGBtoHSL(r, g, b) {
     let d = max - min;
     s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
     switch (max) {
-      case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-      case g: h = (b - r) / d + 2; break;
-      case b: h = (r - g) / d + 4; break;
+      case r:
+        h = (g - b) / d + (g < b ? 6 : 0);
+        break;
+      case g:
+        h = (b - r) / d + 2;
+        break;
+      case b:
+        h = (r - g) / d + 4;
+        break;
     }
     h /= 6;
   }

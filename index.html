@@ -27,6 +27,18 @@
   div{
     margin-bottom: 10px;
   }
+
+  textarea {
+    color: #ff0000;
+  }
+
+  .blue {
+    color: #6699cc;
+    font-weight: bold;
+  }
+  .red {
+    color: #ff0033;
+  }
 </style>
 
 <body>
@@ -35,13 +47,21 @@
 
     <h1>PixiJS Test</h1>
     <h2>RGB to HSL</h2>
+    <h2>Apply a Tint to a sprite.</h2>
     
     <div id="canvas"></div>
 
     <div>
-      <p>RGB 16進数 <input type="text" name="a" size="30" id="box_input"> 例： 255,0,0</p>
+      <p class="blue">INPUT</p>
+      RGB Decimal number（10進数）<input type="text" name="rgb10" size="30" id="box_input_rgb10"> example: <span class="red">255,0,0</span> (0-255)<br>&nbsp;</p>
 
-      <p>HSL <input type="text" name="b" size="30" id="box_output"></p>
+      <p class="blue">OUTPUT</p>
+
+      <p><textarea rows="2" cols="60" id="message"></textarea></p>
+
+      RGB Hexadecimal（16進数）<input type="text" name="rgb16" size="30" id="box_output_rgb16"></p>
+
+      <p>HSL <input type="text" name="hsl" size="30" id="box_output_hsl"></p>
     </div>
 
   </div>
