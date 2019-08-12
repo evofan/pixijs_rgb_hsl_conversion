@@ -28,6 +28,10 @@
     margin-bottom: 10px;
   }
 
+  h3{
+    margin-top: 20px;
+  }
+
   textarea {
     color: #ff0000;
   }
@@ -52,6 +56,7 @@
     <div id="canvas"></div>
 
     <div>
+      <h3>RGB -> HSL</h3>
       <p class="blue">INPUT</p>
       RGB Decimal number（10進数）<input type="text" name="rgb10" size="30" id="box_input_rgb10"> example: <span class="red">255,0,0</span> (0-255)<br>&nbsp;</p>
 
@@ -63,6 +68,20 @@
 
       <p>HSL <input type="text" name="hsl" size="30" id="box_output_hsl"></p>
     </div>
+
+    <div>
+        <h3>HSL -> RGB</h3>
+        <p class="blue">INPUT</p>
+        <!--RGB Decimal number（10進数）<input type="text" name="rgb10" size="30" id="box_input_rgb10"> example: <span class="red">255,0,0</span> (0-255)<br>&nbsp;</p>-->
+  
+        <p class="blue">OUTPUT</p>
+  
+        <p><textarea rows="2" cols="60" id="message"></textarea></p>
+  
+        <!--RGB Hexadecimal（16進数）<input type="text" name="rgb16" size="30" id="box_output_rgb16"></p>-->
+  
+        <!--<p>HSL <input type="text" name="hsl" size="30" id="box_output_hsl"></p>-->
+      </div>
 
   </div>
 
