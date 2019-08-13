@@ -40,9 +40,28 @@
     color: #6699cc;
     font-weight: bold;
   }
+
   .red {
     color: #ff0033;
   }
+
+  .bold {
+    font-weight: bold;
+  }
+
+  .message {
+    font-size: 90%;
+    color: #999999;
+    font-weight: bold;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .center {
+    text-align: center;
+    margin: 0 auto;
+  }
+
 </style>
 
 <body>
@@ -58,30 +77,44 @@
     <div>
       <h3>RGB -> HSL</h3>
       <p class="blue">INPUT</p>
-      RGB Decimal number（10進数）<input type="text" name="rgb10" size="30" id="box_input_rgb10"> example: <span class="red">255,0,0</span> (0-255)<br>&nbsp;</p>
+      <span class="bold">RGB</span> Decimal number（10進数）: <input type="text" name="rgb10" size="30" id="box_input_rgb10" class="blue"> example: <span class="red">255,255,0</span> (0-255)<br>&nbsp;</p>
 
       <p class="blue">OUTPUT</p>
 
-      <p><textarea rows="2" cols="60" id="message"></textarea></p>
+      RGB Hexadecimal（16進数）: <input type="text" name="rgb16" size="30" id="box_output_rgb16"></p>
 
-      RGB Hexadecimal（16進数）<input type="text" name="rgb16" size="30" id="box_output_rgb16"></p>
+      <p><span class="bold">HSL</span> <input type="text" name="hsl" size="30" id="box_output_hsl" class="blue"></p>
 
-      <p>HSL <input type="text" name="hsl" size="30" id="box_output_hsl"></p>
+      <p class="message">message<br><textarea rows="2" cols="60" id="message1"></textarea></p>
+
     </div>
 
     <div>
         <h3>HSL -> RGB</h3>
         <p class="blue">INPUT</p>
-        <!--RGB Decimal number（10進数）<input type="text" name="rgb10" size="30" id="box_input_rgb10"> example: <span class="red">255,0,0</span> (0-255)<br>&nbsp;</p>-->
+        HSL <span class="bold">H</span>(Hue) Decimal number（10進数）: <input type="text" name="hsl_h" size="30" id="box_input_h10" class="blue"> example: <span class="red">355</span> (0-360)<br>&nbsp;</p>
+        HSL <span class="bold">S</span>(Saturation) Decimal number（10進数）: <input type="text" name="hsl_s" size="30" id="box_input_s10" class="blue"> example: <span class="red">90</span> (0-100)<br>&nbsp;</p>
+        HSL <span class="bold">L</span>(Lightness) Decimal number（10進数）: <input type="text" name="hsl_l" size="30" id="box_input_l10" class="blue"> example: <span class="red">50</span> (0-100)<br>&nbsp;</p>
   
         <p class="blue">OUTPUT</p>
   
-        <p><textarea rows="2" cols="60" id="message"></textarea></p>
+        <span class="bold">RGB</span> Hexadecimal（10進数）<input type="text" name="rgb10" size="30" id="box_output_rgb10" class="blue"></p>
+        <span class="bold">RGB</span> Hexadecimal（16進数）<input type="text" name="rgb16" size="30" id="box_output_rgb16_hsl" class="blue"></p>
   
-        <!--RGB Hexadecimal（16進数）<input type="text" name="rgb16" size="30" id="box_output_rgb16"></p>-->
-  
-        <!--<p>HSL <input type="text" name="hsl" size="30" id="box_output_hsl"></p>-->
-      </div>
+        <p class="message">message<br><textarea rows="2" cols="60" id="message2"></textarea></p>
+
+    </div>
+
+    <h3>test result.</h3>
+
+    <p>
+    ・255,255,255 => 0,0,100 => 255,255,255<br>
+    ・0,0,0 => 0,0,0 => 0,0,0<br>
+    ・255,0,0 => 0,100,50 => 255,0,0<br>
+    <span class="red">・249,190,41 => 42,95,57 => 250,187,41</span><br>
+    ・114,12,72 => 324,81,25 => 115,12,74<br>
+    ・115,13,72 => 325,80,25 => 115,13,72<br>
+    </p>
 
   </div>
 
